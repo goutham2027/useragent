@@ -75,6 +75,11 @@ const (
 	tablet = "tablet"
 )
 
+// Tokens parses user agent string returning properites map
+func Tokens(userAgent string) []property {
+	return parse([]byte(userAgent)).list
+}
+
 // Parse user agent string returning UserAgent struct
 func Parse(userAgent string) UserAgent {
 	ua := UserAgent{

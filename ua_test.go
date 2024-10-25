@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	ua "github.com/mileusna/useragent"
+	"github.com/stretchr/testify/assert"
 )
 
 var testTable = [][]string{
@@ -298,4 +299,39 @@ func ExampleParse() {
 		}
 	}
 
+}
+
+func TestTokens(t *testing.T) {
+	type testCase struct {
+		ua     string
+		tokens []string
+	}
+
+	tests := []*testCase{
+		{
+			ua: "Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-A310F/A310FXXU2BQB1 Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/5.4 Chrome/51.0.2704.106 Mobile Safari/537.36",
+			tokens: []string{
+				"5.0",
+				"Linux",
+				"Android",
+				"SAMSUNG SM-A310F",
+				"Build",
+				"AppleWebKit",
+				"SamsungBrowser",
+				"Chrome",
+				"Mobile Safari",
+			},
+		},
+	}
+	for _, test := range tests {
+		tokens := ua.Tokens(test.ua)
+		var keys []string
+		for idx := range tokens {
+			keys = append(keys, tokens[idx].Key)
+		}
+		fmt.Println(keys)
+
+		assert.ElementsMatch(t, test.tokens, keys)
+
+	}
 }
